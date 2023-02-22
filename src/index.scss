@@ -1,0 +1,32 @@
+*,
+*:before,
+*:after{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  background-size: cover;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  font-style: normal;
+}
+
+.container {
+  max-width: 1440px;
+  padding: 50px 75px;
+  margin: 0 auto;
+}
+
+.App {
+  text-align: center;
+}
