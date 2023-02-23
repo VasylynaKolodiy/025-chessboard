@@ -10,7 +10,6 @@ const Board = () => {
   const [fenArr, setFenArr] = useState(fen.split(''))
   const LIMIT = 8;
   const board = new Array(LIMIT).fill(0).map((_, i) => new Array(LIMIT).fill(0).map((_, j) => i * LIMIT + j));
-  // const [onDrag, setOnDrag] = useState(false)
 
   const renderSwitch = (param) => {
     switch (param) {
@@ -28,21 +27,19 @@ const Board = () => {
   }
 
   const drag = (ev) => {
-    // setOnDrag(true)
     ev.dataTransfer.setData("text", ev.target.id);
   }
 
   const drop = (ev, ind) => {
     ev.preventDefault();
     let data = ev.dataTransfer.getData("text");
-    let figure = fenArr[data]
-    if (fenArr[ind] === '.') {
+    let figure = fenArr[data];
+    if (fenArr[ind] === '.' && fenArr[data]) {
       let copyFenArr = [...fenArr]
       copyFenArr[data] = '.'
       copyFenArr[ind] = figure
       setFenArr([...copyFenArr])
     }
-    // setOnDrag(false)
   }
 
   return (
@@ -71,7 +68,7 @@ const Board = () => {
                     className='board__piece'
                     id={cellId}
                     data-number={Math.round((cellId + 1) / 2)}
-                    draggable={fenArr[cellId] !== '.'}
+                    draggable={Boolean(fenArr[cellId]?.match('[wWbB]'))}
                     onDragStart={(event) => drag(event)}
                   >
                     {renderSwitch(fenArr[cellId])}
