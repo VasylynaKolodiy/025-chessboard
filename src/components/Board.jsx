@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ReactComponent as WhitePieceIcon} from "../assets/img/white-piece.svg";
 import {ReactComponent as BlackPieceIcon} from "../assets/img/black-piece.svg";
 import {ReactComponent as WhiteKingIcon} from "../assets/img/white-king.svg";
 import {ReactComponent as BlackKingIcon} from "../assets/img/black-king.svg";
 import './Board.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {SET_FEN} from "../redux/actions/board";
 
 const Board = () => {
-  const fen = ".w.w.w....w......W.b.W.............B..........b....b....b......."
-  const [fenArr, setFenArr] = useState(fen.split(''))
+  const fenArr = (useSelector((state) => state.board.fen)).split('')
   const LIMIT = 8;
   const board = new Array(LIMIT).fill(0).map((_, i) => new Array(LIMIT).fill(0).map((_, j) => i * LIMIT + j));
+  const dispatch = useDispatch();
 
   const renderSwitch = (param) => {
     switch (param) {
@@ -38,8 +40,18 @@ const Board = () => {
       let copyFenArr = [...fenArr]
       copyFenArr[data] = '.'
       copyFenArr[ind] = figure
-      setFenArr([...copyFenArr])
+      dispatch({
+        type: SET_FEN,
+        payload: [...copyFenArr].join(''),
+      })
     }
+  }
+
+  const handleOnChange = (event) => {
+    dispatch({
+      type: SET_FEN,
+      payload: event.target.value,
+    })
   }
 
   return (
@@ -49,7 +61,7 @@ const Board = () => {
         <input
           value={fenArr.join('')}
           maxLength={LIMIT * LIMIT}
-          onChange={(e) => setFenArr(e.target.value.split(''))}
+          onChange={(event) => handleOnChange(event)}
         />
       </div>
 
